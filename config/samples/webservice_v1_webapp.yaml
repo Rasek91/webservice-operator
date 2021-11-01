@@ -1,0 +1,7 @@
+apiVersion: webservice.my.domain/v1
+kind: WebApp
+metadata:
+  name: webapp-sample
+spec:
+  # Add fields here
+  foo: bar

@@ -19,4 +19,4 @@ jobs:
     - name: Login to Docker
       run: docker login --username rasekmarci --password ${{ secrets.DOCKER_ACCESS_TOKEN }}
     - name: Push the Docker image
-      run: docker build . --file Dockerfile --tag rasekmarci/webservice-operator:latest
+      run: docker push . --file Dockerfile --tag rasekmarci/webservice-operator:latest

@@ -5,5 +5,5 @@ metadata:
 spec:
   host: example.com
   image: nginx
-  issuer: letsencrypt-stating
+  issuer: letsencrypt-staging
   replicas: 3

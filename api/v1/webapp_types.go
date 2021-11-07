@@ -17,6 +17,7 @@ limitations under the License.
 package v1
 
 import (
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -28,18 +29,35 @@ type WebAppSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Foo is an example field of WebApp. Edit webapp_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	//+required
+	//+kubebuilder:validation:Minimum=0
+	Replicas *int32 `json:"replicas,omitempty"`
+	//+required
+	Host string `json:"host,omitempty"`
+	//+required
+	Image string `json:"image,omitempty"`
+	//+required
+	Issuer string `json:"issuer,omitempty"`
+	//+optional
+	//+kubebuilder:default=80
+	//+kubebuilder:validation:Minimum=0
+	ContainerPort int32 `json:"containerPort"`
+	//+optional
+	Resources corev1.ResourceRequirements `json:"resources"`
 }
 
 // WebAppStatus defines the observed state of WebApp
 type WebAppStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+	Host              string `json:"host"`
+	Replicas          int32  `json:"replicas"`
+	CertificateStatus string `json:"certificateStatus"`
 }
 
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status
+//+kubebuilder:printcolumn:JSONPath=".status.host",name="Hostname",type="string"
+//+kubebuilder:printcolumn:JSONPath=".status.certificateStatus",name="Certificate Status",type="string"
+//+kubebuilder:printcolumn:JSONPath=".status.replicas",name="Replicas",type="integer"
 
 // WebApp is the Schema for the webapps API
 type WebApp struct {

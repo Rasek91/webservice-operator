@@ -33,6 +33,8 @@ import (
 
 	webservicev1 "github.com/Rasek91/webservice-operator/api/v1"
 	"github.com/Rasek91/webservice-operator/controllers"
+	cmv1 "github.com/jetstack/cert-manager/pkg/apis/certmanager/v1"
+	networkv1 "k8s.io/api/networking/v1"
 	//+kubebuilder:scaffold:imports
 )
 
@@ -42,6 +44,8 @@ var (
 )
 
 func init() {
+	cmv1.AddToScheme(scheme)
+	networkv1.AddToScheme(scheme)
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
 
 	utilruntime.Must(webservicev1.AddToScheme(scheme))
@@ -80,6 +84,7 @@ func main() {
 
 	if err = (&controllers.WebAppReconciler{
 		Client: mgr.GetClient(),
+		Log:    ctrl.Log.WithName("controllers").WithName("WebApp"),
 		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "WebApp")

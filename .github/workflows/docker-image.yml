@@ -1,0 +1,22 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker build . --tag rasekmarci/webservice-operator:latest
+    - name: Login to Docker
+      run: docker login --username rasekmarci --password ${{ secrets.DOCKER_ACCESS_TOKEN }}
+    - name: Push the Docker image
+      run: docker build . --file Dockerfile --tag rasekmarci/webservice-operator:latest
